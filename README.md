@@ -1,129 +1,26 @@
-# Derivatives Analytics Toolkit
+# Value at Risk (VaR) Calculator
 
-A collection of **Streamlit utilities** for quantitative finance, focused on derivatives valuation, risk management, and hedging analysis. This workspace includes interactive applications for bond pricing, Value at Risk (VaR) calculation, minimum-variance hedging, and geometric Brownian motion simulations.
+A **Streamlit-based interactive application** for computing **Value at Risk (VaR)** for portfolios and individual assets using historical market data from Yahoo Finance.
 
-## 📁 Project Structure
+## 📊 What is Value at Risk?
 
-```
-.
-├── bond_valuation.py                      # Interactive bond pricing and duration calculator
-├── VaR.py                                 # Portfolio Value at Risk (VaR) calculator
-├── minimum_variance_hedge_ratio_5.py      # Minimum-variance hedge ratio and optimal contracts
-├── gbm_fast.py                            # GPU-accelerated GBM simulation (CuPy)
-├── geometricbrownianmotion.py             # CPU-based GBM simulation (NumPy)
-├── tests/
-│   └── test_var_portfolio.py              # Unit tests for VaR module
-└── README.md (this file)
-```
+Value at Risk (VaR) is a risk metric that estimates the **maximum potential loss** of a portfolio over a given time horizon at a specified confidence level.
 
-## 🎯 Applications
+For example:
+- **95% VaR of $-50,000 over 10 days** means there's a 95% probability the portfolio won't lose more than $50,000 in the next 10 days (or a 5% chance it will lose more).
 
-### 1. **Value at Risk (VaR) Calculator** (`VaR.py`)
+## 🎯 Features
 
-Interactive Streamlit app for computing **Value at Risk** for portfolios and individual assets using historical market data.
-
-**Features:**
-- Single or multi-asset portfolio support (comma-separated tickers)
-- Configurable confidence levels (90%, 95%, 99%)
-- N-day Value at Risk horizons (1-20 days)
-- Automatic data fetching via Yahoo Finance (`yfinance`)
-- Historical returns visualization
-
-**Key Inputs:**
-- **Tickers:** Asset symbols (e.g., AAPL, MSFT)
-- **Values:** Weights for each asset in the portfolio
-- **Confidence Level:** VaR confidence threshold
-- **Date Range:** Historical period for calculation
-
-**Run:**
-```powershell
-streamlit run VaR.py
-```
+✅ **Multi-asset portfolio support** — Enter comma-separated tickers with custom weights  
+✅ **Configurable confidence levels** — 90%, 95%, or 99%  
+✅ **Flexible time horizons** — N-day VaR (1-20 days)  
+✅ **Real-time data fetching** — Automatic Yahoo Finance data retrieval  
+✅ **Visual analytics** — Historical returns display and portfolio composition  
+✅ **Robust error handling** — Input validation and data availability checks  
 
 ---
 
-### 2. **Bond Valuation Tool** (`bond_valuation.py`)
-
-Streamlit app for **bond pricing and duration analysis** using continuous compounding.
-
-**Calculations:**
-- Bond price: $B = \sum_{i=1}^n c_i e^{-yt_i}$
-- Macaulay duration: $D = \sum_{i=1}^n t_i c_i e^{-yt_i} B^{-1}$
-
-**Features:**
-- Flexible coupon frequency (Monthly, Quarterly, Semi-annual, Yearly)
-- Continuous compounding yield calculations
-- Price sensitivity analysis (ΔB vs. Δy)
-- Cashflow visualization and preview
-- Modified duration and convexity metrics
-
-**Key Inputs:**
-- Face value and coupon percentage
-- Bond yield (continuous compounding)
-- Maturity term in years
-- Coupon payment frequency
-
-**Run:**
-```powershell
-streamlit run bond_valuation.py
-```
-
----
-
-### 3. **Minimum Variance Hedge Ratio Calculator** (`minimum_variance_hedge_ratio_5.py`)
-
-Streamlit app for computing **optimal hedging ratios** and the **number of futures contracts** required.
-
-**Calculations:**
-- Hedge ratio: $\hat{h} = \hat{\rho} \times (\hat{\sigma}_S / \hat{\sigma}_F)$
-- Optimal contracts: $N^* = (\hat{h} \times V_A) / V_F$
-
-**Features:**
-- Automatic correlation and volatility estimation from historical data
-- Scatter plot with fitted hedge line
-- Optional calculation of N* (optimal number of futures contracts)
-- Daily percentage returns analysis
-
-**Key Inputs:**
-- Spot asset ticker (e.g., PSX)
-- Futures contract or correlated asset ticker (e.g., CL=F)
-- Position value and futures contract specifications (for N* calculation)
-
-**Run:**
-```powershell
-streamlit run minimum_variance_hedge_ratio_5.py
-```
-
----
-
-## 📊 Utility Modules
-
-### **GBM Simulations**
-
-#### `gbm_fast.py` — GPU-Accelerated (CuPy)
-Fast geometric Brownian motion simulation using NVIDIA GPUs for handling large path counts.
-
-```python
-gpu_paths = simulate_gbm_gpu(mu=0.1, sigma=0.2, S0=100.0, dt=0.01, n=1000, M=100000)
-```
-
-**Requirements:** CUDA-capable GPU and CuPy library.
-
-#### `geometricbrownianmotion.py` — CPU-Based (NumPy)
-Standard GBM simulation using NumPy, suitable for exploratory analysis and smaller datasets.
-
-```python
-St = np.exp((mu - sigma**2 / 2) * dt + sigma * np.random.normal(...)).cumprod(axis=0)
-```
-
-**Both modules generate:**
-- Multiple price paths following GBM dynamics
-- Time-indexed visualization
-- Configurable drift ($\mu$), volatility ($\sigma$), and horizons
-
----
-
-## 🔧 Installation & Dependencies
+## 🚀 Installation & Setup
 
 ### Requirements
 ```
@@ -132,14 +29,11 @@ pandas
 numpy
 matplotlib
 yfinance
-pytest (for testing)
 ```
 
-**Optional:** CuPy (for GPU acceleration in `gbm_fast.py`)
+### Install Dependencies
 
-### Setup
-
-1. **Clone or navigate to the workspace:**
+1. **Navigate to the project directory:**
    ```powershell
    cd "c:\Users\nahue\OneDrive\Desktop\Options, futures, and other derivatives\Coding projects"
    ```
@@ -150,116 +44,227 @@ pytest (for testing)
    .\venv\Scripts\Activate.ps1
    ```
 
-3. **Install dependencies:**
+3. **Install packages:**
    ```powershell
-   pip install -r requirements.txt
-   ```
-   Or install manually:
-   ```powershell
-   pip install streamlit pandas numpy matplotlib yfinance pytest
+   pip install streamlit pandas numpy matplotlib yfinance
    ```
 
 ---
 
-## 📊 Running the Applications
+## 📋 Running the Application
 
-Start any Streamlit app from the workspace root:
+From the project root, run:
 
 ```powershell
-# Value at Risk Calculator
 streamlit run VaR.py
-
-# Bond Valuation Tool
-streamlit run bond_valuation.py
-
-# Minimum Variance Hedge Ratio
-streamlit run minimum_variance_hedge_ratio_5.py
 ```
 
 Streamlit will open in your default browser at `http://localhost:8501`
 
 ---
 
+## 🎮 User Interface
+
+### Input Section
+
+| Input | Description | Example |
+|-------|-------------|---------|
+| **Asset Tickers** | Comma-separated ticker symbols | `AAPL,MSFT,GOOG` |
+| **Asset Values** | Position size for each asset (same order) | `50000,30000,20000` |
+| **Confidence Level** | VaR confidence threshold | 95% (default) |
+| **Horizon (days)** | Time period for VaR calculation (1-20 days) | 10 days |
+| **Start Date** | Historical data start date | 2020-01-01 |
+| **End Date** | Historical data end date | 2025-10-01 |
+
+### Output Section
+
+The app displays:
+- **Portfolio statistics** — Mean return, volatility, Sharpe ratio
+- **VaR metric** — Dollar loss at specified confidence level
+- **Expected Shortfall (CVaR)** — Average loss exceeding VaR
+- **Historical returns plot** — Visualization of portfolio performance
+
+---
+
+## 💻 Code Architecture
+
+### Key Functions
+
+#### `parse_list(text)`
+Converts comma-separated strings into cleaned lists.
+```python
+parse_list("AAPL, MSFT ,GOOG")  # Returns: ["AAPL", "MSFT", "GOOG"]
+```
+
+#### `fetch_price(ticker)`
+Downloads historical price data using `yfinance`.
+- Handles missing data gracefully
+- Prefers "Adj Close" over "Close"
+- Returns pandas Series or None
+
+#### `build_price_dataframe(price_dict)`
+Aggregates multiple price series into aligned DataFrame.
+- Converts scalars to Series
+- Collapses single-column DataFrames
+- Auto-aligns on dates
+
+#### `compute_n_day_returns(returns, n)`
+Scales daily returns to N-day horizon using:
+$$\text{N-day return} = (1 + \text{daily return})^n - 1$$
+
+#### `compute_portfolio_var(returns, values, confidence_level, n_days)`
+Main VaR calculation:
+1. Weights returns by asset values
+2. Aggregates into portfolio returns
+3. Scales to N-day horizon
+4. Computes percentile at (1 - confidence_level)
+
+---
+
+## 📊 Example Usage
+
+### Single Asset VaR
+- **Ticker:** AAPL
+- **Value:** $100,000
+- **Confidence:** 95%
+- **Horizon:** 10 days
+
+Result: 95% VaR = $-4,250 (5% chance of losing more than $4,250 in 10 days)
+
+### Portfolio VaR
+- **Tickers:** AAPL, MSFT, GOOG
+- **Values:** $50,000, $30,000, $20,000
+- **Confidence:** 95%
+- **Horizon:** 10 days
+
+Result: Portfolio 95% VaR incorporates correlation between assets
+
+---
+
 ## ✅ Testing
 
-Run the test suite:
+Unit tests are included in [tests/test_var_portfolio.py](tests/test_var_portfolio.py):
 
+```powershell
+pytest tests/test_var_portfolio.py -v
+```
+
+### Test Coverage
+- **`test_parse_list()`** — CSV parsing with whitespace handling
+- **`test_weights_and_var()`** — Portfolio weighting and percentile calculations
+- **`test_build_price_dataframe_scalars()`** — Data structure construction and error cases
+
+Run all tests:
 ```powershell
 pytest tests/ -v
 ```
 
-### Test Coverage
-- **test_var_portfolio.py:** VaR calculation validation, portfolio weighting, input parsing
-  - `test_parse_list()` — CSV parsing correctness
-  - `test_weights_and_var()` — Portfolio VaR computation
-  - `test_build_price_dataframe_scalars()` — Data structure handling
-
 ---
 
-## 🎨 Code Patterns & Conventions
+## 🔧 Customization & Advanced Options
 
-### Streamlit UI Design
-- Single-file apps with `st.button()` for triggering calculations
-- Input validation with `st.error()` for missing or invalid data
-- Metrics display via `st.metric()` and charts via `st.pyplot()`
-- Math rendering in `st.markdown()` using LaTeX: `$...$` for inline, `$$...$$` for blocks
-
-### Data Fetching
+### Modify Default Values
+Edit the input defaults in `VaR.py`:
 ```python
-def fetch_price(ticker):
-    """Download price series using yfinance."""
-    df = yf.download(ticker, start=start_date, end=end_date)
-    if df.empty:
-        return None
-    return df["Adj Close"] if "Adj Close" in df.columns else df["Close"]
+confidence_level = st.selectbox("Confidence Level", options=[0.90, 0.95, 0.99], index=1)
+n_days = st.slider("Horizon (days)", min_value=1, max_value=20, value=10)
 ```
 
-### Error Handling
+### Change Date Range
 ```python
-try:
-    # calculation logic
-except Exception as e:
-    st.error(f"Error: {str(e)}")
+start_date = col3.date_input("Start Date", pd.to_datetime("2020-01-01"))
+end_date = col4.date_input("End Date", pd.to_datetime("2025-10-01"))
 ```
 
-### Numeric Inputs
-```python
-st.number_input("Face Value", value=100.0, placeholder="e.g. 1,000")
-```
+### Add Additional Metrics
+You can extend the app to compute:
+- **Conditional Value at Risk (CVaR)** — Average loss exceeding VaR
+- **Expected Shortfall** — Mean of tail returns
+- **Stress test scenarios** — Pre-defined market shocks
+- **Backtesting results** — Historical VaR accuracy
 
 ---
 
-## 📝 Notes
+## 📝 Implementation Details
 
-- **Data Source:** All applications use Yahoo Finance (`yfinance`) for historical market data
-- **Continuous Compounding:** Bond valuation uses continuous compounding formulas
-- **Percentage Returns:** Hedge ratio calculations work with daily percentage changes (%)
-- **N-Day VaR:** Value at Risk is scaled to the specified horizon using volatility scaling
+### Historical Simulation Method
+The VaR calculation uses the **historical simulation approach**:
+
+1. **Fetch historical prices** for each asset (daily)
+2. **Calculate returns** — percentage change between consecutive days
+3. **Weight returns** — multiply by position values
+4. **Aggregate portfolio returns** — sum weighted returns
+5. **Scale to horizon** — apply N-day scaling formula
+6. **Find percentile** — extract the specified confidence level
+
+### Assumptions
+- Historical returns are representative of future risk
+- No structural breaks in correlation
+- Daily compounding of returns
+- Log-normal price distributions (implicit in percentage returns)
+
+---
+
+## ⚠️ Limitations & Considerations
+
+1. **Historical data dependency** — VaR accuracy depends on data length and market regime
+2. **Tail risk** — Doesn't capture extreme events beyond historical range
+3. **Assumption violations** — Returns may not be normally distributed
+4. **Correlation stability** — Portfolio correlations can change significantly
+5. **Data quality** — Missing or adjusted prices may skew results
+
+For more robust risk assessment, consider:
+- **Conditional VaR (CVaR)** for tail risk
+- **Monte Carlo simulations** for forward-looking estimates
+- **Stress testing** for scenario analysis
+- **GARCH models** for volatility dynamics
 
 ---
 
-## 🚀 Next Steps & Future Enhancements
+## 📄 Error Handling
 
-- Add **Greeks calculations** (Delta, Gamma, Vega, Rho) for option pricing
-- Implement **Monte Carlo simulations** for exotic derivatives
-- Extend **portfolio optimization** with constraints (diversification, sector limits)
-- Add **stress testing** and **scenario analysis** frameworks
-- Performance improvements for large portfolios (parallel computation)
-- Unit tests for bond valuation and hedge ratio modules
+The app handles common issues gracefully:
+
+| Error | Resolved By |
+|-------|-------------|
+| Invalid ticker | Data fetch returns None → shown to user |
+| Empty date range | Error message with suggested dates |
+| Insufficient data | Minimum 2 data points required for returns |
+| Malformed input | CSV parser strips whitespace automatically |
+
+---
+
+## 🚀 Future Enhancements
+
+- [ ] **Conditional VaR (CVaR/Expected Shortfall)** calculation
+- [ ] **Backtesting module** — evaluate VaR accuracy over time
+- [ ] **Correlation heatmap** — visualize asset dependencies
+- [ ] **Stress scenarios** — pre-defined market shocks
+- [ ] **Monte Carlo simulation** — forward-looking VaR
+- [ ] **Portfolio optimization** — find minimum-VaR allocation
+- [ ] **Export reports** — PDF/Excel summary
+- [ ] **Real-time updates** — live VaR tracking
 
 ---
 
-## 📄 License & Attribution
+## 📚 References
 
-This workspace is for educational purposes in derivatives and quantitative finance.
-
-For questions or contributions, ensure changes:
-1. Maintain Streamlit UX and simple dataflow patterns
-2. Include appropriate error handling and input validation
-3. Include unit tests for new computational helpers
-4. Preserve LaTeX math formatting in documentation
+- Hull, J. C. (2021). *Options, Futures, and Other Derivatives* (11th ed.)
+- Dowd, K. (2007). *Measuring Market Risk* (2nd ed.)
+- RiskMetrics. (1996). VaR Technical Document
+- [Streamlit Documentation](https://docs.streamlit.io)
+- [yfinance Documentation](https://yfinance.readthedocs.io)
 
 ---
+
+## 👤 Author Notes
+
+This Streamlit app is designed for educational purposes in quantitative finance. It demonstrates:
+- Real-time financial data integration
+- Interactive risk calculations
+- Matplotlib visualization in web apps
+- Pandas-based portfolio analytics
+- Error handling best practices
 
 **Created:** March 2026  
 **Python Version:** 3.8+  
